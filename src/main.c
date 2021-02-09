@@ -1,17 +1,6 @@
 #include "../inc/cmd_parser.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <stdint.h>
-#include <string.h>
-
-/* utilities */
-#define _I(fmt, args...) printf(fmt "\n", ##args)
-#define _E(fmt, args...) printf("ERROR: " fmt "\n", ##args)
+#include "utils.h"
+#include "display_driver.h"
 
 /* physical address spans */
 #define HPS2FPGA_BASE 0xc0000000   /* physical address of the H2F bridge */
@@ -22,16 +11,17 @@
 #define UART0_RX_BUFF 0x0
 #define UART0_LINE_STATUS 0x14
 
+#define USB_OTG         0xFFB00000
+#define USB_OTG_PWR     0xFFB0000C
+#define USB_PWR         0x00100000
+
 int main(int argc, char *argv[])
 {
     printf("FPGA SOC GPS data parser");
 
     int fd;                   /* file descriptor */
-    unsigned char *mem_uart0;
+    uint8_t *mem_uart0;
     unsigned char *mem_h2f;   /* memory pointer for HPS2FPGA bridge */
-    unsigned char *mem_target;
-    unsigned long data;
-
 
     /* Acquire "/dev/mem" file's descriptor (use "open" syscall) */
     // LAB: your code goes here
@@ -52,30 +42,26 @@ int main(int argc, char *argv[])
         _E("Failed to map physical address");
     }
 
-    // Test stuff for outputting data
-    int row = 0;
-    int offset = 0;
-    char text[2400];
-    int ram_address = 0;
-    _I("Enter text to display:");
-    scanf("%[^\n]",text);
-    _I("Enter line to write to:");
-    scanf("%d",&row);
-    _I("Enter offset:");
-    scanf("%d",&offset);
-
-    ram_address = offset + row*80;
-    _I("\nEntered data:");
-    _I("Row: %d \nOffset: %d \nText: %s",row, offset, text);
-    _I("RAM address: %x",ram_address);
-    _I("Text size: %d",strlen(text));
-
-    //write to RAM
-    for(int text_pos = 0; text_pos < strlen(text); text_pos++)
+    _I("Choose an action:");
+    _I("0 - Init display");
+    _I("1 - Clear display");
+    _I("2 - Write to display");
+    int action = 0;
+    scanf("%d", &action);
+    getchar();
+    switch(action)
     {
-        mem_target = mem_h2f + ram_address + text_pos;
-        *mem_target = text[text_pos];
+        case 0:
+            init_display(mem_h2f);
+            break;
+        case 1:
+            clear_display(mem_h2f);
+            break;
+        case 2:
+            write_to_display(mem_h2f);
+            break;
     }
+
     
 
     // // print test
