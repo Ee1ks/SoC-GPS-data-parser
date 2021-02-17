@@ -1,6 +1,7 @@
 #include "../inc/cmd_parser.h"
-#include "utils.h"
-#include "display_driver.h"
+#include "../inc/utils.h"
+#include "../inc/display_driver.h"
+#include "../inc/server.h"
 
 /* physical address spans */
 #define HPS2FPGA_BASE 0xc0000000   /* physical address of the H2F bridge */
@@ -41,28 +42,41 @@ int main(int argc, char *argv[])
     {
         _E("Failed to map physical address");
     }
-
+while(1)
+{
+    int breakout = 0;
     _I("Choose an action:");
-    _I("0 - Init display");
-    _I("1 - Clear display");
+    _I("0 - Clear display");
+    _I("1 - Init display");
     _I("2 - Write to display");
+    _I("3 - Open server");
+    _I("4 - Exit");
     int action = 0;
     scanf("%d", &action);
     getchar();
     switch(action)
     {
         case 0:
-            init_display(mem_h2f);
+            clear_display(mem_h2f);
             break;
         case 1:
-            clear_display(mem_h2f);
+            init_display(mem_h2f);
             break;
         case 2:
             write_to_display(mem_h2f);
             break;
+        case 3:
+            open_server(mem_h2f);
+            break;
+        case 4:
+            breakout = 1;
+            break;
     }
-
-    
+    if (breakout == 1)
+    {
+        return 0;
+    }
+}
 
     // // print test
     // for(int i =0 ; i< sizeof(GLL_test); i++)

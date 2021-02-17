@@ -79,7 +79,7 @@ void write_to_display(unsigned char *ram_addr)
     int row = 0;
     int offset = 0;
     uint8_t text[2400];
-    uint8_t text_pos_in_ram = 0;
+    int text_pos_in_ram = 0;
     unsigned char *mem_target;
     _I("Enter text to display:");
     scanf("%[^\n]",text);
