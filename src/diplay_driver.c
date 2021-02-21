@@ -27,17 +27,18 @@ void init_display(unsigned char *ram_addr)
     char line7_80[40] = "Time: None";
     char line8[80] = "________________________________________________________________________________";
     char line9[80] = {0};
-    char line10_40[40] = "Speed: None (knots)";
-    char line10_80[40] = "Speed: None (km/h)";
+    char line10_40[40] = "Speed: None";
+    char line10_80[40] = "Speed: None";
     char line11[80] = {0};
-    char line12[80] = "Altitude above sea level: None (m)";
+    char line12[80] = "Altitude above sea level: None";
     char line13[80] = "________________________________________________________________________________";
     char line14[80] = {0};
     char line15[80] = "Number of satelites:";
     char line16[80] = {0};
-    char line17_1[20] = "RUSSIA: None";
-    char line17_2[20] = "CHINA: None";
-    char line17_3[20] = "USA: None";
+    char line17_1[20] = "GLONASS: None";
+    char line17_2[20] = "Galileo: None";
+    char line17_3[20] = " BeiDou: None";
+    char line17_4[20] = "  Combo: None";
 
 
 

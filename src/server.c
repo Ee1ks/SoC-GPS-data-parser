@@ -20,8 +20,20 @@ int getData(int sockfd, unsigned char *ram_addr)
     // _I("key: %d value: %s", addr_pos, text);
     //write to RAM
     uint8_t write_len = 80;
+    // len for Date/time line
     if (addr_pos >7*80 && addr_pos <8*80)
         write_len = 40-6;
+    // len for speed line
+    else if(addr_pos >10*80 && addr_pos <11*80)
+        write_len = 40-7;
+    // len for altitude line
+    else if(addr_pos >12*80 && addr_pos <13*80)
+        write_len = 80-26;
+    // len for satelite count
+    else if (addr_pos >17*80 && addr_pos <18*80)
+        write_len = 20-9;
+    else
+        write_len = 80;
 
     unsigned char *mem_target;
     for (uint8_t text_pos = 0; text_pos < write_len; text_pos++)

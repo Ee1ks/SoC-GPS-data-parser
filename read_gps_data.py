@@ -13,18 +13,38 @@ def send_data(data, s):
 
 def parse_data(data, s):
     split_data = data.split(',')
-    if split_data[0] == "$GNGGA":
-        send_data(str.encode("0,"+data[1:]),s)
-        send_data(str.encode("606,"+split_data[1][:2]+":"+split_data[1][2:4]+":"+split_data[1][4:6]),s)
-    elif split_data[0] == "$GNRMC":
-        send_data(str.encode("80,"+data[1:]),s)
-    #     print("RMC time: {}".format(split_data[1]))
-    elif split_data[0] == "$GNVTG":
-        send_data(str.encode("160,"+data[1:]),s)
-    #     print("VTG SPEED: {}".format(split_data[5]))
-    elif split_data[0] == "$GNGLL":
-        send_data(str.encode("240,"+data[1:]),s)
-    #     print("GLL STUFF: {}".format(split_data[1]))
+    if split_data[0][1:] == "GNGSV":
+        # Any combo satelites in view
+        send_data(str.encode("1349,"+split_data[3]), s)
+    elif split_data[0][1:] == "GLGSV":
+        # GLONASS in view
+        send_data(str.encode("1289,"+split_data[3]), s)
+    elif split_data[0][1:] == "GAGSV":
+        # Galileo in view
+        send_data(str.encode("1309,"+split_data[3]), s)
+    elif split_data[0][1:] == "GBGSV":
+        # BeiDou in view
+        send_data(str.encode("1329,"+split_data[3]), s)
+    elif split_data[0][3:] == "GGA":
+        # full command
+        send_data(str.encode("0,"+data[1:]), s)
+        # time
+        send_data(str.encode("606,"+split_data[1][:2]+":"+split_data[1][2:4]+":"+split_data[1][4:6]), s)
+        # altitude
+        send_data(str.encode("906,"+split_data[9]), s)
+    elif split_data[0][3:] == "RMC":
+        # full command
+        send_data(str.encode("80,"+data[1:]), s)
+        # speed in knots
+        send_data(str.encode("727,"+split_data[7]+" knots"), s)
+    elif split_data[0][3:] == "VTG":
+        # full command
+        send_data(str.encode("160,"+data[1:]), s)
+        # speed in km/h
+        send_data(str.encode("767,"+split_data[7]+" km/h"), s)
+    elif split_data[0][3:] == "GLL":
+        # full command
+        send_data(str.encode("240,"+data[1:]), s)
     else:
         return
 
