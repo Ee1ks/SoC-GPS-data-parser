@@ -17,10 +17,10 @@ void init_display(unsigned char *ram_addr)
     unsigned char *mem_target;
     //every row is 80 char and there are 30 rows = 80*30 = 2400
     uint8_t init_text[2400] = {0};
-    char line1[80] = "GLL,5656.37235,N,02408.00860,E,094312.00,A,A*7A";
-    char line2[80] = "RMC,094313.00,A,5656.37219,N,02408.00860,E,0.546,,181120,,,A*60";
-    char line3[80] = "VTG,,T,,M,0.546,N,1.012,K,A*38";
-    char line4[80] = "GGA,094313.00,5656.37219,N,02408.00860,E,1,10,1.90,23.4,M,22.9,M,,*75";
+    char line1[80] = {0};
+    char line2[80] = {0};
+    char line3[80] = {0};
+    char line4[80] = {0};
     char line5[80] = "________________________________________________________________________________";
     char line6[80] = {0};
     char line7_40[40] = "Date: None";
@@ -61,8 +61,10 @@ void init_display(unsigned char *ram_addr)
     memcpy(&init_text[80*15], line15, sizeof(line15));
     memcpy(&init_text[80*16], line16, sizeof(line16));
     memcpy(&init_text[80*17], line17_1, sizeof(line17_1));
-    memcpy(&init_text[80*17+30], line17_2, sizeof(line17_2));
-    memcpy(&init_text[80*17+60], line17_3, sizeof(line17_3));
+    memcpy(&init_text[80*17+20], line17_2, sizeof(line17_2));
+    memcpy(&init_text[80*17+40], line17_3, sizeof(line17_3));
+    memcpy(&init_text[80*17+60], line17_4, sizeof(line17_4));
+    
     _I("Data copyed, writing to RAM");
 
 

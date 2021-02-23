@@ -1,8 +1,8 @@
 import serial
 import socket
 
-HOST = '0.0.0.0'  # Standard loopback interface address (localhost)
-PORT =  8082        # Port to listen on (non-privileged ports are > 1023)
+HOST = '78.84.96.96'  # Standard loopback interface address (localhost)
+PORT =  8086        # Port to listen on (non-privileged ports are > 1023)
 
 
 def send_data(data, s):
@@ -15,36 +15,92 @@ def parse_data(data, s):
     split_data = data.split(',')
     if split_data[0][1:] == "GNGSV":
         # Any combo satelites in view
-        send_data(str.encode("1349,"+split_data[3]), s)
+        data_string = "1429,"+split_data[3]+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][1:] == "GLGSV":
         # GLONASS in view
-        send_data(str.encode("1289,"+split_data[3]), s)
+        data_string = "1369,"+split_data[3]+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][1:] == "GAGSV":
         # Galileo in view
-        send_data(str.encode("1309,"+split_data[3]), s)
+        data_string = "1389,"+split_data[3]+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][1:] == "GBGSV":
         # BeiDou in view
-        send_data(str.encode("1329,"+split_data[3]), s)
+        data_string = "1409,"+split_data[3]+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][3:] == "GGA":
         # full command
-        send_data(str.encode("0,"+data[1:]), s)
+        data_string = "0,"+data[1:]
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
         # time
-        send_data(str.encode("606,"+split_data[1][:2]+":"+split_data[1][2:4]+":"+split_data[1][4:6]), s)
+        if (split_data[1] != ""):
+            data_string ="606,"+split_data[1][:2]+":"+split_data[1][2:4]+":"+split_data[1][4:6]+"\n"
+            extra = 0
+            if len(data_string) < 80:
+                extra = 80-len(data_string)
+            send_data(str.encode(data_string+extra*"-"), s)
         # altitude
-        send_data(str.encode("906,"+split_data[9]), s)
+        if (split_data[9] != ""):
+            data_string = "986,"+split_data[9]+"\n"
+            extra = 0
+            if len(data_string) < 80:
+               extra = 80-len(data_string)
+            send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][3:] == "RMC":
         # full command
-        send_data(str.encode("80,"+data[1:]), s)
+        data_string = "80,"+data[1:]
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
         # speed in knots
-        send_data(str.encode("727,"+split_data[7]+" knots"), s)
+        data_string = "807,"+split_data[7]+"knots"+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
+        # date
+        data_string = "566,"+split_data[9]+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][3:] == "VTG":
         # full command
-        send_data(str.encode("160,"+data[1:]), s)
+        data_string = "160,"+data[1:]
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
         # speed in km/h
-        send_data(str.encode("767,"+split_data[7]+" km/h"), s)
+        data_string = "847,"+split_data[7]+"km/h"+"\n"
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     elif split_data[0][3:] == "GLL":
         # full command
-        send_data(str.encode("240,"+data[1:]), s)
+        data_string = "240,"+data[1:]
+        extra = 0
+        if len(data_string) < 80:
+            extra = 80-len(data_string)
+        send_data(str.encode(data_string+extra*"-"), s)
     else:
         return
 

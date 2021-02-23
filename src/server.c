@@ -10,7 +10,8 @@ int getData(int sockfd, unsigned char *ram_addr)
     if ((n = read(sockfd, buffer, 80)) < 0)
         _E("ERROR reading from socket");
     buffer[n] = '\0';
-    sscanf(buffer, "%d,%s", &addr_pos, text);
+    _I("%s",buffer);
+    sscanf(buffer, "%d,%s\n", &addr_pos, text);
     if (addr_pos >2400)
     {
         close(sockfd);
@@ -47,7 +48,7 @@ int getData(int sockfd, unsigned char *ram_addr)
 
 void open_server(unsigned char *ram_addr)
 {
-    int sockfd, newsockfd, portno = 8082, clilen;
+    int sockfd, newsockfd, portno = 8086, clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int n;
