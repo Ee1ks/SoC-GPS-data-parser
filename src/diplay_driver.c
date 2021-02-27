@@ -4,7 +4,7 @@ void clear_display(unsigned char *ram_addr)
 {
     unsigned char *mem_target;
     _I("Clearing display");
-    for(int i = 0; i< 2400; i++)
+    for (int i = 0; i < 2400; i++)
     {
         mem_target = ram_addr + i;
         *mem_target = 0;
@@ -40,34 +40,32 @@ void init_display(unsigned char *ram_addr)
     char line17_3[20] = " BeiDou: None";
     char line17_4[20] = "  Combo: None";
 
-
-
-    memcpy(&init_text[80*1], line1, sizeof(line1));
-    memcpy(&init_text[80*2], line2, sizeof(line2));
-    memcpy(&init_text[80*3], line3, sizeof(line3));
-    memcpy(&init_text[80*4], line4, sizeof(line4));
-    memcpy(&init_text[80*5], line5, sizeof(line5));
-    memcpy(&init_text[80*6], line6, sizeof(line6));
-    memcpy(&init_text[80*7], line7_40, sizeof(line7_40));
-    memcpy(&init_text[80*7+40], line7_80, sizeof(line7_80));
-    memcpy(&init_text[80*8], line8, sizeof(line8));
-    memcpy(&init_text[80*9], line9, sizeof(line9));
-    memcpy(&init_text[80*10], line10_40, sizeof(line10_40));
-    memcpy(&init_text[80*10+40], line10_80, sizeof(line10_80));
-    memcpy(&init_text[80*11], line11, sizeof(line11));
-    memcpy(&init_text[80*12], line12, sizeof(line12));
-    memcpy(&init_text[80*13], line13, sizeof(line13));
-    memcpy(&init_text[80*14], line14, sizeof(line14));
-    memcpy(&init_text[80*15], line15, sizeof(line15));
-    memcpy(&init_text[80*16], line16, sizeof(line16));
-    memcpy(&init_text[80*17], line17_1, sizeof(line17_1));
-    memcpy(&init_text[80*17+30], line17_2, sizeof(line17_2));
-    memcpy(&init_text[80*17+60], line17_3, sizeof(line17_3));
+    //init display
+    memcpy(&init_text[80 * 1], line1, sizeof(line1));
+    memcpy(&init_text[80 * 2], line2, sizeof(line2));
+    memcpy(&init_text[80 * 3], line3, sizeof(line3));
+    memcpy(&init_text[80 * 4], line4, sizeof(line4));
+    memcpy(&init_text[80 * 5], line5, sizeof(line5));
+    memcpy(&init_text[80 * 6], line6, sizeof(line6));
+    memcpy(&init_text[80 * 7], line7_40, sizeof(line7_40));
+    memcpy(&init_text[80 * 7 + 40], line7_80, sizeof(line7_80));
+    memcpy(&init_text[80 * 8], line8, sizeof(line8));
+    memcpy(&init_text[80 * 9], line9, sizeof(line9));
+    memcpy(&init_text[80 * 10], line10_40, sizeof(line10_40));
+    memcpy(&init_text[80 * 10 + 40], line10_80, sizeof(line10_80));
+    memcpy(&init_text[80 * 11], line11, sizeof(line11));
+    memcpy(&init_text[80 * 12], line12, sizeof(line12));
+    memcpy(&init_text[80 * 13], line13, sizeof(line13));
+    memcpy(&init_text[80 * 14], line14, sizeof(line14));
+    memcpy(&init_text[80 * 15], line15, sizeof(line15));
+    memcpy(&init_text[80 * 16], line16, sizeof(line16));
+    memcpy(&init_text[80 * 17], line17_1, sizeof(line17_1));
+    memcpy(&init_text[80 * 17 + 30], line17_2, sizeof(line17_2));
+    memcpy(&init_text[80 * 17 + 60], line17_3, sizeof(line17_3));
     _I("Data copyed, writing to RAM");
 
-
     //write to RAM
-    for(uint16_t text_pos = 0; text_pos < 2400; text_pos++)
+    for (uint16_t text_pos = 0; text_pos < 2400; text_pos++)
     {
         mem_target = ram_addr + text_pos;
         *mem_target = init_text[text_pos];
@@ -77,28 +75,29 @@ void init_display(unsigned char *ram_addr)
 void write_to_display(unsigned char *ram_addr)
 {
     // Test stuff for outputting data
+    //Can be used to add text to display
     int row = 0;
     int offset = 0;
     uint8_t text[2400];
     int text_pos_in_ram = 0;
     unsigned char *mem_target;
     _I("Enter text to display:");
-    scanf("%[^\n]",text);
+    scanf("%[^\n]", text);
     _I("Enter line to write to:");
-    scanf("%d",&row);
+    scanf("%d", &row);
     getchar();
     _I("Enter offset:");
-    scanf("%d",&offset);
+    scanf("%d", &offset);
     getchar();
 
-    text_pos_in_ram = offset + row*80;
+    text_pos_in_ram = offset + row * 80;
     _I("\nEntered data:");
-    _I("Row: %d \nOffset: %d \nText: %s",row, offset, text);
-    _I("RAM address: %x",text_pos_in_ram);
-    _I("Text size: %d",strlen(text));
+    _I("Row: %d \nOffset: %d \nText: %s", row, offset, text);
+    _I("RAM address: %x", text_pos_in_ram);
+    _I("Text size: %d", strlen(text));
 
     //write to RAM
-    for(uint8_t text_pos = 0; text_pos < strlen(text); text_pos++)
+    for (uint8_t text_pos = 0; text_pos < strlen(text); text_pos++)
     {
         mem_target = ram_addr + text_pos_in_ram + text_pos;
         *mem_target = text[text_pos];

@@ -8,7 +8,6 @@ void parse_by_comma(uint8_t *cmd)
     uint8_t *tmp = NULL;
     while (cmd[i] != '\0')
     {
-        // printf("Letter \"%c\"\n", GLL_test[i]);
         if (cmd[i] == ',')
         {
             tmp = (uint8_t *)malloc((i - start + 1) * sizeof(uint8_t));
